@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+  database:
+    container_name: database
+    image: mongo:5.0
+    ports:
+      - "27017:27017" 
+    environment:
+      - MONGO_INITDB_DATABASE=db
+    volumes:
+      - ./data:/data/db
+  server:
+    container_name: backend
+    image: broubrou/yoga-club-app-backend
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    depends_on:
+      - database
+  front:
+    container_name: frontend
+    image: broubrou/yoga-club-app-frontend
+    ports:
+      - "8081:80"
+    depends_on:
+      - server
